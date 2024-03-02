@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const user_controller = require("../controllers/userController");
+const chat_controller = require("../controllers/chatController");
 
 function verifyToken(req, res, next) {
 	// Get auth header value
@@ -32,6 +33,14 @@ router.post("/users/", user_controller.user_post);
 router.put("/users/:id", user_controller.user_put);
 
 router.delete("/users/:id", user_controller.user_delate);
+
+//CHATS ROUTERS
+
+router.get("/chats", chat_controller.chat_list_get);
+
+router.get("/chats/:id", chat_controller.chat_get);
+
+router.post("/chats", chat_controller.chat_post);
 
 // LOGIN ROUTERS
 

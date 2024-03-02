@@ -7,11 +7,12 @@ const userSchema = new Schema({
 	username: { type: String, required: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
-});
-
-userSchema.virtual("url").get(function () {
-	// We don't use an arrow function as we'll need the this object
-	return `/users/${this._id}`;
+	chats: [
+		{
+			user_id: { type: Schema.Types.ObjectId, ref: "User" },
+			chat_id: { type: Schema.Types.ObjectId, ref: "Chat" },
+		},
+	],
 });
 
 module.exports = mongoose.model("user", userSchema);

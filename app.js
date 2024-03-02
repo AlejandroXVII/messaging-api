@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var app = express();
 
 //CODE ADDED (NOT EXPRESS GENERATED)
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 app.use(express.json());

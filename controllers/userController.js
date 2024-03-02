@@ -14,7 +14,7 @@ exports.user_list_get = asyncHandler(async (req, res, next) => {
 //GET AN USER WITH ID
 exports.user_get = asyncHandler(async (req, res, next) => {
 	const user = await User.findById(req.params.id).exec();
-	return res.send(Object.values(user));
+	return res.send(user);
 });
 
 //REGISTER USER
