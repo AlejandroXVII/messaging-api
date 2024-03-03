@@ -35,7 +35,7 @@ router.put("/users/:id", user_controller.user_put);
 router.delete("/users/:id", user_controller.user_delate);
 
 //CHATS ROUTERS
-
+//THE BODY NEED A TO AND A FROM AS WELL AS THE MESSAGE TEXT
 router.get("/chats", chat_controller.chat_list_get);
 
 router.get("/chats/:id", chat_controller.chat_get);
