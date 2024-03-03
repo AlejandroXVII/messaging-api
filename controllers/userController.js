@@ -45,14 +45,23 @@ exports.user_delate = asyncHandler(async (req, res, next) => {
 	return res.send(403);
 });
 
-exports.user_login = asyncHandler(async (req, res, next) => {
+exports.login_post = asyncHandler(async (req, res, next) => {
 	const user = await User.findOne({ username: req.body.username }).exec();
 	const match = await bcrypt.compare(req.body.password, user.password);
 	if (match) {
 		jwt.sign({ user: user }, process.env.JWT_KEY, (err, token) => {
-			return res.json({ token });
+			res.cookie("token", token, {
+				httpOnly: true,
+			});
+			//res.redirect("/");
+			return res.json(200);
 		});
 	} else {
 		return res.send(400);
 	}
+});
+
+exports.logout_get = asyncHandler(async (req, res, next) => {
+	res.cookie("token", "", { maxAge: 1 });
+	return res.send(200);
 });

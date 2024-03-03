@@ -2,23 +2,17 @@ var express = require("express");
 var router = express.Router();
 const user_controller = require("../controllers/userController");
 const chat_controller = require("../controllers/chatController");
+const jwt = require("jsonwebtoken");
 
 function verifyToken(req, res, next) {
-	// Get auth header value
-	const bearerHeader = req.headers["authorization"];
-	// Check if bearer is undefined
-	if (typeof bearerHeader !== "undefined") {
-		// Split at the space
-		const bearer = bearerHeader.split(" ");
-		// Get token from array
-		const bearerToken = bearer[1];
-		// Set the token
-		req.token = bearerToken;
-		// Next middleware
+	const token = req.cookies.token;
+	try {
+		const user = jwt.verify(token, process.env.JWT_KEY);
+		req.user = user;
 		next();
-	} else {
-		// Forbidden
-		res.sendStatus(403);
+	} catch (err) {
+		res.clearCookie("token");
+		return res.redirect(403);
 	}
 }
 
@@ -44,6 +38,8 @@ router.post("/chats", chat_controller.chat_post);
 
 // LOGIN ROUTERS
 
-router.post("/login", user_controller.user_login);
+router.post("/login", user_controller.login_post);
+
+router.get("/logout", user_controller.logout_get);
 
 module.exports = router;
