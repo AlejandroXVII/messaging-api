@@ -9,8 +9,14 @@ exports.chat_list_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.chat_get = asyncHandler(async (req, res, next) => {
-	const chat = await Chat.findById(req.params.id).exec();
-	return res.send(chat);
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		res.send(400);
+		return;
+	} else {
+		const chat = await Chat.findById(req.params.id).exec();
+		return res.send(chat);
+	}
 });
 
 exports.chat_post = asyncHandler(async (req, res, next) => {

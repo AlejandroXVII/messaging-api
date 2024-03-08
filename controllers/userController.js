@@ -50,7 +50,10 @@ exports.login_post = asyncHandler(async (req, res, next) => {
 	const match = await bcrypt.compare(req.body.password, user.password);
 	if (match) {
 		jwt.sign({ user: user }, process.env.JWT_KEY, (err, token) => {
-			return res.status(200).json(token);
+			return res.status(200).json({
+				userID: user._id,
+				token: token,
+			});
 		});
 	} else {
 		return res.send(400);

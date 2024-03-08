@@ -3,16 +3,16 @@ var router = express.Router();
 const user_controller = require("../controllers/userController");
 const chat_controller = require("../controllers/chatController");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 function verifyToken(req, res, next) {
-	const token = req.cookies.token;
+	const token = req.params.token;
 	try {
-		const user = jwt.verify(token, process.env.JWT_KEY);
-		req.user = user;
-		next();
+		const response = jwt.verify(token, process.env.JWT_KEY);
+		console.log(response);
+		return res.send(200);
 	} catch (err) {
-		res.clearCookie("token");
-		return res.redirect(403);
+		return res.send(404);
 	}
 }
 
@@ -41,5 +41,7 @@ router.post("/chats", chat_controller.chat_post);
 router.post("/login", user_controller.login_post);
 
 router.get("/logout", user_controller.logout_get);
+
+router.get("/token/:token", verifyToken);
 
 module.exports = router;
